@@ -1,30 +1,96 @@
 # Shopify Integrations
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+A polished, fully responsive marketing/demo website for a **Shopify app integrations marketplace** — discover, browse, and manage third-party integrations that extend a Shopify store (payments, marketing, analytics, shipping, webhooks and more). Built with Next.js and the shadcn/ui component library; originally scaffolded with v0.app and refined afterwards.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/gileb64375-5584s-projects/v0-shopify-integrations)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/IuvKTTl9oWl)
+> Built by Girish Lade — https://ladestack.in
 
-## Overview
+## What it does
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+The site presents a storefront-style catalog of Shopify integrations:
+
+- **Home page** (`/`): hero section, popular integration categories grid (payment gateways, email/SMS marketing, analytics, social/sharing tools), feature highlights, CTAs.
+- **Integrations catalog** (`/integrations`): searchable, tab-filtered grid of integration cards with badges, descriptions, and pricing CTAs.
+- **Webhooks page** (`/webhooks`): explanatory page about Shopify webhooks with a reference-style table of webhook topics.
+- **API page** (`/api`): explanatory page about the Shopify Admin API and how integrations connect to it.
+- Dark/light theming via `next-themes` (shadcn `ThemeProvider`).
+
+All pages are static — no database, no server-side API routes, no authentication back-end (sign-in/get-started buttons are UI placeholders).
+
+## Features
+
+- Fully responsive layout (mobile → desktop)
+- Search input and category tabs on the integrations page
+- shadcn/ui components: Card, Button, Input, Badge, Tabs, Table, Dialog, DropdownMenu, Toast, and more
+- Dark mode with system preference detection
+- Geist font family, Lucide icons throughout
+- Charts-ready: `recharts` dependency included for analytics dashboards
+
+## Tech stack
+
+| Layer      | Technology |
+|-----------|------------|
+| Framework | Next.js 15 (App Router, static export) |
+| UI        | React 19, Tailwind CSS 3.4, shadcn/ui (Radix primitives) |
+| Icons     | lucide-react |
+| Forms     | react-hook-form + zod |
+| Fonts     | Geist (geist package) |
+| Analytics | @vercel/analytics |
+
+## Quick start
+
+```bash
+# install dependencies (pnpm preferred; npm works too)
+pnpm install
+
+# run the dev server
+pnpm dev        # http://localhost:3000
+
+# build a static production bundle
+pnpm build     # output goes to ./out
+
+# preview the static bundle
+npx serve out
+```
+
+### npm alternative
+
+```bash
+npm install --legacy-peer-deps
+npm run build
+```
+
+## Project structure
+
+```
+app/
+  page.tsx              # Home / hero / categories
+  integrations/page.tsx # Integrations catalog (search + tabs)
+  webhooks/page.tsx     # Webhooks explainer + topic table
+  api/page.tsx          # Shopify Admin API explainer
+  layout.tsx            # Root layout, theme provider, fonts
+  globals.css           # Tailwind base styles
+components/
+  ui/                   # shadcn/ui primitives (button, card, input, tabs, table, ...)
+  theme-provider.tsx    # next-themes wrapper
+lib/
+  utils.ts              # cn() class-name helper
+public/                 # Static assets
+styles/                 # Extra style files
+next.config.mjs         # Static export config (output: 'export')
+components.json         # shadcn/ui configuration
+```
+
+## Environment variables
+
+None required — the app is fully static and needs no secrets.
 
 ## Deployment
 
-Your project is live at:
+The site is a static export, so it can be hosted anywhere that serves static files:
 
-**[https://vercel.com/gileb64375-5584s-projects/v0-shopify-integrations](https://vercel.com/gileb64375-5584s-projects/v0-shopify-integrations)**
+- **GitHub Pages** (current): the `gh-pages` branch is deployed automatically and served at `https://girishlade111.github.io/shopify-integrations/`. Because the site lives under a sub-path, `next.config.mjs` sets `basePath: '/shopify-integrations'`. **If you deploy to a root domain or Vercel, remove the `basePath` setting** before building.
+- **Vercel / Netlify / Cloudflare Pages**: connect the repo and build with `pnpm build` (publish directory `out/` for Pages).
 
-## Build your app
+## Security note
 
-Continue building your app on:
-
-**[https://v0.app/chat/projects/IuvKTTl9oWl](https://v0.app/chat/projects/IuvKTTl9oWl)**
-
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Next.js is pinned to 15.2.8 (patched for CVE-2025-55182 React2Shell and related 15.2.x advisories).
